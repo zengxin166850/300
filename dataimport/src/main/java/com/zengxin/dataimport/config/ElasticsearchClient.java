@@ -15,8 +15,6 @@ import java.util.regex.Pattern;
 
 /**
  * RestHighLevelClient 客户端
- *
- * @author lenovo
  */
 @Configuration
 public class ElasticsearchClient {
@@ -27,9 +25,20 @@ public class ElasticsearchClient {
     @Value("${es.hosts}")
     private String hostlist;
     /**
+     * es用户名
+     */
+    @Value("${es.userName}")
+    private String esUserName;
+
+    /**
+     * es密码
+     */
+    @Value("${es.passwd}")
+    private String esPassword;
+    /**
      * logger.
      */
-    private final Logger logger = LoggerFactory.getLogger(ElasticsearchClient.class);
+    private Logger logger = LoggerFactory.getLogger(ElasticsearchClient.class);
 
     private static final String URL_REGEX = ".+:\\d{0,5}$";
 
@@ -43,6 +52,9 @@ public class ElasticsearchClient {
     public RestHighLevelClient getClient() {
         logger.info("es.hosts{}", hostlist);
         //构造登录凭证
+        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(esUserName, esPassword));
+        //解析hostlist配置信息
         String[] split = hostlist.split(",");
         //创建HttpHost数组，其中存放es主机和端口的配置信息
         HttpHost[] httpHostArray = new HttpHost[split.length];
@@ -57,6 +69,8 @@ public class ElasticsearchClient {
             }
         }
         RestClientBuilder builder = RestClient.builder(httpHostArray);
+        builder.setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
+
         //创建RestHighLevelClient客户端
         return new RestHighLevelClient(builder);
     }
