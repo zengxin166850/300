@@ -1,0 +1,45 @@
+PUT tangshi300
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "index.default_pipeline":"content_length"
+  },
+  "mappings": {
+    "properties": {
+      "contents": {
+        "type": "text",
+        "analyzer": "ik_max_word",
+        "fielddata": true,
+        "fields":{
+            "keyword":{
+                "type": "keyword"
+            }
+        }
+      },
+      "type": {
+        "type": "keyword"
+      },
+      "author": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "ik_max_word",
+        "fielddata": true,
+        "fields": {
+          "keyword":{
+            "type":"keyword"
+          }
+        }
+      },
+      "timestamp": {
+        "type": "date",
+        "format": "yyyy-MM-dd||yyyy-MM-dd HH:mm:ss||yyyy-MM-dd HH:mm:ss.SSS||strict_date_optional_time||epoch_millis"
+      },
+      "content_length":{
+        "type": "long"
+      }
+    }
+  }
+}

@@ -1,5 +1,3 @@
-# Emacs Lisp Byte-compiled files
-*.elc
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

@@ -1,0 +1,6 @@
+es:
+  #集群请使用逗号分隔
+  hosts: 172.25.17.142:9200
+  #  hosts: 127.0.0.1:9200
+  #userName: elastic
+  #passwd: 123456

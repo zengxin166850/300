@@ -1,0 +1,17 @@
+PUT _ingest/pipeline/content_length
+{
+  "description" : "pipeline for tangshi300",
+  "processors": [
+    {
+      "set": {
+        "field": "_source.timestamp",
+        "value": "{{_ingest.timestamp}}"
+      }
+    },
+    {
+      "script": {
+        "source": "ctx.content_length = ctx.contents.length();"
+      }
+    }
+  ]
+}
